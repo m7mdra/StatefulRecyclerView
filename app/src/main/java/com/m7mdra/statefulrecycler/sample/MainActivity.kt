@@ -42,6 +42,15 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+
+        view.progressViewBuilder {
+            layoutInflater.inflate(R.layout.custom_progress_view, null, true)
+        }
+        view.emptyViewBuilder {
+            layoutInflater.inflate(R.layout.custom_empty_view, null, true)
+
+        }
+
         view.errorButton {
             setOnClickListener {
                 Toast.makeText(this@MainActivity, "Retry button clicked", Toast.LENGTH_SHORT).show()

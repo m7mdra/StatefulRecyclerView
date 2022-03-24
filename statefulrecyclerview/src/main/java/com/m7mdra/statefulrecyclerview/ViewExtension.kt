@@ -25,25 +25,44 @@ internal inline fun <T : View> T.apply(block: T.() -> Unit): T {
 }
 
 fun StatefulRecyclerView.progressBar(builder: CircularProgressIndicator.() -> Unit) {
-    progressBar.apply(builder)
+    progressBar?.apply(builder)
 }
 
 fun StatefulRecyclerView.emptyText(builder: MaterialTextView.() -> Unit) {
-    emptyMessageTextView.apply(builder)
+    emptyMessageTextView?.apply(builder)
+}
+
+
+fun StatefulRecyclerView.progressViewBuilder(builder: () -> View) {
+    progressView = builder.invoke()
+    progressView?.gone()
+    addView(progressView)
+}
+
+fun StatefulRecyclerView.errorViewBuilder(builder: () -> View) {
+    errorView = builder.invoke()
+    errorView?.gone()
+    addView(errorView)
+}
+
+fun StatefulRecyclerView.emptyViewBuilder(builder: () -> View) {
+    emptyView = builder.invoke()
+    emptyView?.gone()
+    addView(emptyView)
 }
 
 fun StatefulRecyclerView.errorLayout(builder: LinearLayout.() -> Unit) {
-    errorLayout.apply(builder)
+    errorLayout?.apply(builder)
 }
 
 fun StatefulRecyclerView.errorMessage(builder: MaterialTextView.() -> Unit) {
-    errorMessageTextView.apply(builder)
+    errorMessageTextView?.apply(builder)
 }
 
 fun StatefulRecyclerView.errorButton(builder: MaterialButton.() -> Unit) {
-    errorRetryButton.apply(builder)
+    errorRetryButton?.apply(builder)
 }
 
 fun StatefulRecyclerView.recyclerView(builder: RecyclerView.() -> Unit) {
-    recyclerView.apply(builder)
+    recyclerView?.apply(builder)
 }

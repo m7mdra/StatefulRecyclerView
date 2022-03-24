@@ -19,47 +19,102 @@ class StatefulRecyclerView : FrameLayout, StatefulView {
     private fun onStateChange() {
         when (currentState) {
             State.Data -> {
-                progressBar.gone()
-                errorLayout.gone()
-                emptyMessageTextView.gone()
-                recyclerView.visible()
+                hideProgress()
+                hideError()
+                hideEmpty()
+                recyclerView?.visible()
             }
             State.Loading -> {
-                progressBar.visible()
-                errorLayout.gone()
-
-                emptyMessageTextView.gone()
-                recyclerView.gone()
+                showProgress()
+                hideError()
+                hideEmpty()
+                recyclerView?.gone()
             }
             State.Error -> {
-                progressBar.gone()
-                errorLayout.visible()
-                emptyMessageTextView.gone()
-                recyclerView.gone()
+                hideProgress()
+                showError()
+                hideEmpty()
+                recyclerView?.gone()
             }
             State.Empty -> {
-                progressBar.gone()
-                errorLayout.gone()
-                emptyMessageTextView.visible()
-                recyclerView.gone()
+                hideProgress()
+                hideError()
+                showEmpty()
+                recyclerView?.gone()
 
             }
             State.Default -> {
-                progressBar.gone()
-                errorLayout.gone()
-                emptyMessageTextView.gone()
-                recyclerView.gone()
+                hideProgress()
+                hideError()
+                hideEmpty()
+                recyclerView?.gone()
 
             }
         }
     }
 
-    internal lateinit var progressBar: CircularProgressIndicator
-    internal lateinit var errorLayout: LinearLayout
-    internal lateinit var errorMessageTextView: MaterialTextView
-    internal lateinit var errorRetryButton: MaterialButton
-    internal lateinit var emptyMessageTextView: MaterialTextView
-    internal lateinit var recyclerView: RecyclerView
+    private fun showProgress() {
+        if (progressView != null) {
+            progressView?.visible()
+        } else {
+            progressBar?.visible()
+        }
+    }
+
+    private fun showError() {
+        if (errorView != null) {
+            errorView?.visible()
+        } else {
+            errorLayout?.visible()
+        }
+    }
+
+    private fun hideError() {
+        if (errorView != null) {
+            errorView?.gone()
+        } else {
+            errorLayout?.gone()
+        }
+    }
+
+    private fun hideProgress() {
+        if (progressView != null) {
+            progressView?.gone()
+        } else {
+            progressBar?.gone()
+        }
+    }
+
+    private fun showEmpty() {
+        if (emptyView != null) {
+            emptyView?.visible()
+        } else {
+            emptyMessageTextView?.visible()
+        }
+    }
+
+    private fun hideEmpty() {
+        if (emptyView != null) {
+            emptyView?.gone()
+        } else {
+            emptyMessageTextView?.gone()
+        }
+    }
+
+    //progress
+    internal var progressBar: CircularProgressIndicator? = null
+    internal var progressView: View? = null
+
+    //error
+    internal var errorLayout: LinearLayout? = null
+    internal var errorMessageTextView: MaterialTextView? = null
+    internal var errorRetryButton: MaterialButton? = null
+    internal var errorView: View? = null
+
+    internal var emptyMessageTextView: MaterialTextView? = null
+    internal var emptyView: View? = null
+
+    internal var recyclerView: RecyclerView? = null
 
     constructor(context: Context) : super(context) {
         inflate(context, R.layout.stateful_recycler_view_layout, this)
@@ -88,5 +143,8 @@ class StatefulRecyclerView : FrameLayout, StatefulView {
     override fun moveToState(newState: State) {
         currentState = newState
         onStateChange()
+
     }
+
+
 }
