@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/emptyMessageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="No data found. try again"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/errorLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/errorMessageTextView"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Failed to load data, tap try again to retry"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+     />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/errorRetryButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="retry" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>
