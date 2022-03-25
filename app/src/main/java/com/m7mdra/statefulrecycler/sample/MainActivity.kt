@@ -4,12 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.m7mdra.statefulrecycler.sample.databinding.CustomEmptyViewBinding
 import com.m7mdra.statefulrecyclerview.*
 
 class MainActivity : AppCompatActivity() {
@@ -47,7 +46,11 @@ class MainActivity : AppCompatActivity() {
             layoutInflater.inflate(R.layout.custom_progress_view, null, true)
         }
         view.emptyViewBuilder {
-            layoutInflater.inflate(R.layout.custom_empty_view, null, true)
+            val binding = CustomEmptyViewBinding.inflate(layoutInflater)
+            binding.button.setOnClickListener {
+                Toast.makeText(this@MainActivity, "button clicked".uppercase(), Toast.LENGTH_SHORT).show()
+            }
+            binding.root
 
         }
 
