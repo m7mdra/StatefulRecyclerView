@@ -1,56 +1,27 @@
 package com.m7mdra.statefulrecyclerview
 
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.AttributeSet
-import android.view.View
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textview.MaterialTextView
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.InvocationKind
-import kotlin.contracts.contract
+
 
 class StatefulRecyclerView : FrameLayout, StatefulView {
     private var currentState = State.Default
 
-
     private fun onStateChange() {
         when (currentState) {
-            State.Data -> {
-                progressBar.gone()
-                errorLayout.gone()
-                emptyMessageTextView.gone()
-                recyclerView.visible()
-            }
-            State.Loading -> {
-                progressBar.visible()
-                errorLayout.gone()
-
-                emptyMessageTextView.gone()
-                recyclerView.gone()
-            }
-            State.Error -> {
-                progressBar.gone()
-                errorLayout.visible()
-                emptyMessageTextView.gone()
-                recyclerView.gone()
-            }
-            State.Empty -> {
-                progressBar.gone()
-                errorLayout.gone()
-                emptyMessageTextView.visible()
-                recyclerView.gone()
-
-            }
-            State.Default -> {
-                progressBar.gone()
-                errorLayout.gone()
-                emptyMessageTextView.gone()
-                recyclerView.gone()
-
-            }
+            State.Data -> data()
+            State.Loading -> loading()
+            State.Error -> error()
+            State.Empty -> empty()
+            State.Default -> default()
         }
     }
 
@@ -62,11 +33,13 @@ class StatefulRecyclerView : FrameLayout, StatefulView {
     internal lateinit var recyclerView: RecyclerView
 
     constructor(context: Context) : super(context) {
+        isSaveEnabled = true
         inflate(context, R.layout.stateful_recycler_view_layout, this)
 
     }
 
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
+        isSaveEnabled = true
         inflate(context, R.layout.stateful_recycler_view_layout, this)
     }
 
@@ -89,4 +62,90 @@ class StatefulRecyclerView : FrameLayout, StatefulView {
         currentState = newState
         onStateChange()
     }
+
+    override fun showEmpty() {
+        empty()
+    }
+
+
+    override fun showData() {
+        data()
+    }
+
+    override fun showError() {
+        error()
+    }
+
+    override fun showLoading() {
+        loading()
+    }
+
+    override fun showDefault() {
+        default()
+    }
+
+    private fun empty() {
+        progressBar.gone()
+        errorLayout.gone()
+        emptyMessageTextView.visible()
+        recyclerView.gone()
+    }
+
+    private fun data() {
+        progressBar.gone()
+        errorLayout.gone()
+        emptyMessageTextView.gone()
+        recyclerView.visible()
+    }
+
+    private fun loading() {
+        progressBar.visible()
+        errorLayout.gone()
+        emptyMessageTextView.gone()
+        recyclerView.gone()
+    }
+
+    private fun error() {
+        progressBar.gone()
+        errorLayout.visible()
+        emptyMessageTextView.gone()
+        recyclerView.gone()
+    }
+
+    private fun default() {
+        progressBar.gone()
+        errorLayout.gone()
+        emptyMessageTextView.gone()
+        recyclerView.gone()
+    }
+
+    private class SavedState : BaseSavedState {
+        var state: State = State.Default
+
+        constructor(superState: Parcelable?) : super(superState)
+        private constructor(parcel: Parcel) : super(parcel) {
+            state = parcel.readSerializable() as State
+        }
+
+        override fun writeToParcel(out: Parcel?, flags: Int) {
+            super.writeToParcel(out, flags)
+            out?.writeSerializable(state)
+        }
+
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<SavedState> {
+            override fun createFromParcel(parcel: Parcel): SavedState {
+                return SavedState(parcel)
+            }
+
+            override fun newArray(size: Int): Array<SavedState?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
+
 }
